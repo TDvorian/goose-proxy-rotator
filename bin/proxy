@@ -6,16 +6,16 @@ const http = require('http'),
     net = require('net'),
     url = require('url'),
     debug = require('debug')('proxy');
+    var JFile=require('jfile');
 
 const proxyPort = 8989;
 let proxies = [];
 const { execSync } = require('child_process');
 execSync('rm -f PROXY.txt');
 execSync('sh g.sh');
-var fs = require('fs');
-var array = fs.readFileSync('PROXY.txt').toString().split("\n");
-debug('download %s proxys', array.length);
-array.forEach(function(proxy) {
+var myF=new JFile("./data.txt");
+debug('download %s proxys', myF.lines.length);
+myF.lines.forEach(function(proxy) {
  let p = {host: proxy.split(":")[0],
  port: proxy.split(":")[1]}
  proxies.push(p);
