@@ -7,17 +7,28 @@ const http = require('http'),
     url = require('url'),
     debug = require('debug')('proxy');
 
-const proxyPort = 60000;
+const proxyPort = 8989;
 let proxies = [];
+const { execSync } = require('child_process');
+execSync('rm -f PROXY.txt');
+execSync('sh g.sh');
+var fs = require('fs');
+var array = fs.readFileSync('PROXY.txt').toString().split("\n");
+array.forEach(function(proxy) {
+ let p = {host: proxy.split(":")[0],
+ port: proxy.split(":")[1]}
+ proxies.push(p);
+});
 
-try {
-    if (process.env.PROXIES !== undefined) {
-        proxies = JSON.parse(process.env.PROXIES);
-    }
-} catch (e) {
-    debug('Wrong PROXIES var format. %s %s', e.message, e.stack);
-    process.exit();
-}
+
+// try {
+//     if (process.env.PROXIES !== undefined) {
+//         proxies = JSON.parse(process.env.PROXIES);
+//     }
+// } catch (e) {
+//     debug('Wrong PROXIES var format. %s %s', e.message, e.stack);
+//     process.exit();
+// }
 
 /**
  * @return {object}
