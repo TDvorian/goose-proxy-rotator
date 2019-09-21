@@ -13,7 +13,7 @@ let proxies = [];
 const { execSync } = require('child_process');
 execSync('rm -f PROXY.txt');
 execSync('sh g.sh');
-var myF=new JFile("./data.txt");
+var myF=new JFile("PROXY.txt");
 debug('download %s proxys', myF.lines.length);
 myF.lines.forEach(function(proxy) {
  let p = {host: proxy.split(":")[0],
