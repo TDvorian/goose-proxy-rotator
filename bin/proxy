@@ -14,7 +14,7 @@ const { execSync } = require('child_process');
 execSync('rm -f PROXY.txt');
 execSync('sh g.sh');
 var myF=new JFile("PROXY.txt");
-debug('download %s proxys', myF.lines.length);
+console.log('download '+ myF.lines.length +' proxys');
 myF.lines.forEach(function(proxy) {
  let p = {host: proxy.split(":")[0],
  port: proxy.split(":")[1]}
@@ -147,5 +147,5 @@ server.on('connect', (request, socketRequest) => {
         }).end();
 });
 
-debug('Start proxy on port %s', proxyPort);
+console.log('Start proxy on port: ' + proxyPort);
 server.listen(proxyPort);
