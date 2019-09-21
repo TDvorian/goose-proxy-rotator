@@ -14,6 +14,7 @@ execSync('rm -f PROXY.txt');
 execSync('sh g.sh');
 var fs = require('fs');
 var array = fs.readFileSync('PROXY.txt').toString().split("\n");
+debug('download %s proxys', array.length);
 array.forEach(function(proxy) {
  let p = {host: proxy.split(":")[0],
  port: proxy.split(":")[1]}
