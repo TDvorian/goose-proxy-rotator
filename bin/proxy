@@ -2,6 +2,9 @@
 
 "use strict";
 
+    var JFile=require('jfile');
+
+
 let proxies = [];
 const { execSync } = require('child_process');
 execSync('rm -f PROXY.txt');
