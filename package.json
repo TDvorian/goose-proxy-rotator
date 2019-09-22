@@ -24,8 +24,10 @@
   },
   "homepage": "https://github.com/redco/goose-proxy-rotator#readme",
   "dependencies": {
+    "async": "^3.1.0",
     "debug": "^2.2.0",
     "jfile": "^1.1.12",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "request": "^2.88.0"
   }
 }
