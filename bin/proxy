@@ -6,6 +6,7 @@
 
     var fs = require('fs');
 let proxies = [];
+var _ = require('lodash');
 const { execSync } = require('child_process');
 execSync('rm -f PROXY.txt');
 execSync('sh g.sh');
@@ -16,8 +17,8 @@ myF.lines.forEach(function(proxy) {
  port: proxy.split(":")[1]}
  proxies.push(p);
 });
-
+let pro = _.uniqBy(proxies, 'host')
 var file = fs.createWriteStream('cache_peers.conf');
 file.on('error', function(err) { /* error handling */ });
-proxies.forEach(function(v) { file.write("cache_peer " + v.host + " parent " + v.port + " 0 round-robin no-query no-digest" + '\n'); });
+pro.forEach(function(v) { file.write("cache_peer " + v.host + " parent " + v.port + " 0 round-robin no-query no-digest" + '\n'); });
 file.end();
