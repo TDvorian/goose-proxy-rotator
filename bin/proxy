@@ -70,19 +70,19 @@ const getOptions = (request, proxy, ssl) => {
 
 const server = http.createServer();
 server.on('request', (request, response) => {
-    debug('Request %s %s', request.method, request.url);
+    console.log('Request ' + request.method + " " + request.url);
     const options = getOptions(request, rotateProxyAddress());
     const proxy = http.request(options);
 
     proxy
         .on('error', (err) => {
-            debug('[error] ' + err);
+            console.error('[error] ' + err);
             response.end();
         })
         .on('response', (proxyResponse) => {
-            debug('Response received');
+            console.log('Response received');
             if (proxyResponse.statusCode === 407) {
-                debug('[error] AUTH REQUIRED');
+                console.error('[error] AUTH REQUIRED');
                 process.exit();
             }
             proxyResponse.on('data', (chunk) => {
@@ -105,13 +105,13 @@ server.on('request', (request, response) => {
     proxy.end();
 });
 server.on('connect', (request, socketRequest) => {
-    debug('Request %s %s', request.method, request.url);
+    console.log('Request ' + request.method + " " + request.url);
     const options = getOptions(request, rotateProxyAddress(), true);
 
     const proxy = http.request(options);
     proxy
         .on('error', (err) => {
-            debug('[error] ' + err);
+            console.error('[error] ' + err);
             process.exit();
         })
         .on('connect', (res, socket) => {
