@@ -42,25 +42,47 @@ async.timesSeries(40, getProxies, function(err){
     execSync('sh g.sh');
     var myF=new JFile("PROXY.txt");
     myF.lines.forEach(function(proxy) {
+        var parsed = parseInt(roxy.split(":")[1], 10);
+        if (isNaN(parsed)) {
+            return; }
      let p = {host: proxy.split(":")[0],
-     port: proxy.split(":")[1]}
+     port: parsed}
      proxies.push(p);
     });
     let pro = _.uniqBy(proxies, 'host')
     var file = fs.createWriteStream('cache_peers.conf');
     file.on('error', function(err) { /* error handling */ });
     console.log('download '+ pro.length +' proxys');
-
+    var proxies= [];
     pro.forEach(function(v) {
     var parsed = parseInt(v.port, 10);
-      if (isNaN(parsed)) {
-     return; }
-    
+    proxies.push(v.host + ":" + parsed );
+
      file.write("cache_peer " + v.host + " parent " + parsed + " 0 round-robin no-query no-digest" + '\n'); });
     file.end();
     
+    var postData = {
+        servers: proxies
+    }
 
-
+    var url = 'http://127.0.0.1:3000/proxy'
+    var options = {
+      method: 'post',
+      body: postData,
+      json: true,
+      url: url
+    }
+    request(options, function (err, res, body) {
+      if (err) {
+        console.error('error posting json: ', err)
+        throw err
+      }
+      var headers = res.headers
+      var statusCode = res.statusCode
+      console.log('headers: ', headers)
+      console.log('statusCode: ', statusCode)
+      console.log('body: ', body)
+    })
 
 
 
